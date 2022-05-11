@@ -1,5 +1,5 @@
+import Tab from 'components/tab/Tab'
 import { Outlet } from 'react-router-dom'
-import Tab from 'routes/components/tab/Tab'
 import styles from './layout.module.scss'
 
 const Layout = () => {

@@ -46,14 +46,14 @@ input::-webkit-contacts-auto-fill-button {
   // @miriya (2019-06-17): 사파리에서 자동완성 사람 아이콘 없앰
   position: absolute;
   right: 0;
-  display: none !important;
+  display: none;
   pointer-events: none;
   visibility: hidden;
 }
 
 input {
   background-color: transparent;
-  background-image: none !important;
+  background-image: none;
   border: 0;
 }
 

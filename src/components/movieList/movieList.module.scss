@@ -1,4 +1,5 @@
 .wrapper {
+  position: relative;
   display: flex;
   flex-direction: row;
   margin-bottom: 1em;
@@ -6,6 +7,12 @@
 
   img {
     width: 150px;
+    height: 225px;
+    background-size: contain;
+
+    &.noImg {
+      content: url('https://oh.on-life.kr/inc/img/no_image.png');
+    }
   }
 
   .description {
@@ -29,5 +36,12 @@
 
   &:last-child {
     margin-bottom: 0;
+  }
+
+  .icon {
+    position: absolute;
+    right: 0.25em;
+    bottom: 0;
+    font-size: 1.5rem;
   }
 }

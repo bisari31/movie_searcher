@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
 import Favorites from './pages/favorites/Favorites'
 import Home from './pages/home/Home'
-import Layout from './pages/layout/Layout'
+import Layout from './components/layout/Layout'
 
 const App = () => {
   return (

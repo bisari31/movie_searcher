@@ -2,12 +2,11 @@ import { AiFillStar, AiFillHome } from 'react-icons/ai'
 import { Link, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import styles from './tab.module.scss'
-import classNames from 'classnames/bind'
+import cx from 'classnames'
 
 const Tab = () => {
   const [isMainPage, setIsMainPage] = useState(true)
   const location = useLocation()
-  const cx = classNames.bind(styles)
 
   useEffect(() => {
     setIsMainPage(location.pathname === '/')
@@ -16,10 +15,10 @@ const Tab = () => {
   return (
     <div className={styles.wrapper}>
       <Link to='/'>
-        <AiFillHome className={cx(styles.icon, { active: isMainPage })} />
+        <AiFillHome className={cx(styles.icon, { [styles.active]: isMainPage })} />
       </Link>
       <Link to='/favorites'>
-        <AiFillStar className={cx(styles.icon, { active: !isMainPage })} />
+        <AiFillStar className={cx(styles.icon, { [styles.active]: !isMainPage })} />
       </Link>
     </div>
   )

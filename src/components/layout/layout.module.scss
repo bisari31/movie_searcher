@@ -1,5 +1,4 @@
-@use '../../../styles/constants/colors';
-@use '../../../styles/constants/sizes';
+@use '../../styles/colors';
 
 .wrapper {
   position: absolute;
@@ -11,7 +10,7 @@
   height: 720px;
   padding: 2em;
   background-color: colors.$WHITE;
-  border-radius: sizes.$BORDER_RADIUS;
+  border-radius: 3em;
   box-shadow: 0 25px 27px 2px rgba(207, 207, 207, 25%);
   transform: translate(-50%, -50%);
 }
