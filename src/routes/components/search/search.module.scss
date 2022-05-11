@@ -1,0 +1,38 @@
+@use '../../../styles/constants/colors';
+
+.wrapper {
+  display: flex;
+  width: 100%;
+  background-color: #f6f6f6;
+  border-radius: 2em;
+  // border-radius: 1.5em;
+
+  form {
+    display: flex;
+    flex: 1;
+    align-items: center;
+
+    input {
+      width: 100%;
+      padding: 1em;
+      margin: 0 1em;
+      font-size: 0.9rem;
+      color: colors.$INPUT_COLOR;
+
+      &::placeholder {
+        color: colors.$PLACE_COLOR;
+      }
+    }
+  }
+
+  button {
+    height: 100%;
+    padding: 0 1em;
+  }
+
+  svg {
+    font-size: 1rem;
+    color: colors.$PLACE_COLOR;
+    cursor: pointer;
+  }
+}

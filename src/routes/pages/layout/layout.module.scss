@@ -1,14 +1,17 @@
 @use '../../../styles/constants/colors';
+@use '../../../styles/constants/sizes';
 
 .wrapper {
   position: absolute;
   top: 50%;
   left: 50%;
+  display: flex;
+  flex-direction: column;
   width: 360px;
   height: 720px;
   padding: 2em;
   background-color: colors.$WHITE;
-  border-radius: 1.5em;
+  border-radius: sizes.$BORDER_RADIUS;
   box-shadow: 0 25px 27px 2px rgba(207, 207, 207, 25%);
   transform: translate(-50%, -50%);
 }

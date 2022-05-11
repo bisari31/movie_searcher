@@ -1,1 +1,7 @@
 @use '../../../styles/constants/colors';
+
+main {
+  height: 100%;
+  margin: 2em 0 3em;
+  overflow-y: scroll;
+}
