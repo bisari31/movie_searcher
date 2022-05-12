@@ -3,14 +3,15 @@
 .wrapper {
   display: flex;
   width: 100%;
+  // border-radius: 1.5em;
   background-color: #f6f6f6;
   border-radius: 2em;
-  // border-radius: 1.5em;
 
   form {
     display: flex;
     flex: 1;
     align-items: center;
+    height: 50px;
 
     input {
       width: 100%;

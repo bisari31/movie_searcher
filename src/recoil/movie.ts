@@ -5,12 +5,12 @@ export const movieData = atom({
   default: [],
 })
 
-export const favoriteMovie = atom({
-  key: 'favoriteMove',
-  default: [],
-})
-
 export const searchComent = atom({
   key: 'searchComents',
   default: '검색 결과가 없습니다.',
+})
+
+export const inputText = atom({
+  key: 'inputText',
+  default: '',
 })

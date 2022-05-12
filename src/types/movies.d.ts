@@ -4,5 +4,5 @@ export interface IMovies {
   Type: string
   Year: string
   imdbID: string
-  isFavorite?: boolean
+  Favorite?: boolean
 }
