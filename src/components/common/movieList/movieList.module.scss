@@ -13,7 +13,7 @@
     img {
       width: 150px;
       height: 225px;
-      background-size: cover;
+      background-size: contain;
 
       &.noImg {
         content: url('https://oh.on-life.kr/inc/img/no_image.png');

@@ -1,4 +1,4 @@
-import Tab from 'components/tab/Tab'
+import Tab from 'components/tabBar/TabBar'
 import { Outlet } from 'react-router-dom'
 import styles from './layout.module.scss'
 

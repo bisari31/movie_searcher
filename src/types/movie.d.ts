@@ -1,4 +1,4 @@
-export interface IMovies {
+export interface IMovie {
   Poster: string
   Title: string
   Type: string

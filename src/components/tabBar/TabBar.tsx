@@ -1,7 +1,7 @@
 import { AiFillStar, AiFillHome } from 'react-icons/ai'
 import { Link, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import styles from './tab.module.scss'
+import styles from './tabBar.module.scss'
 import cx from 'classnames'
 
 const Tab = () => {
