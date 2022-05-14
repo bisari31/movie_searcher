@@ -9,6 +9,7 @@ const Modal = () => {
   const setMovieData = useSetRecoilState(movieDataState)
   const setFavoriteData = useSetRecoilState(favoriteMovieDataState)
   const ref = useRef<HTMLDivElement>(null)
+
   const handleCloseModal = () => {
     setShowModal((prev) => !prev)
     return false

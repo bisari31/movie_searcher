@@ -11,7 +11,7 @@ const Favorites = () => {
   const showModal = useRecoilValue(modalState)
 
   useEffect(() => {
-    const data = localStorage.getItem('movie')
+    const data = localStorage.getItem('MOVIE_DATA')
     if (data) {
       const parseData = JSON.parse(data)
       setFavoriteMovies(parseData)
@@ -19,9 +19,10 @@ const Favorites = () => {
     if (movies.length) {
       const setMovie = movies.filter((movie) => movie.Favorites)
       setFavoriteMovies(setMovie)
-      localStorage.setItem('movie', JSON.stringify(setMovie))
+      localStorage.setItem('MOVIE_DATA', JSON.stringify(setMovie))
     }
   }, [movies, setFavoriteMovies])
+
   return (
     <>
       <header className={styles.header}>

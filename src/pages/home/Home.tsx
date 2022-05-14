@@ -27,8 +27,9 @@ const Home = () => {
   const setMovies = useSetRecoilState(movieDataState)
   const observerRef = useRef<IntersectionObserver>()
   const targetRef = useRef<HTMLDivElement>(null)
+  const scrollRef = useRef<HTMLDivElement>(null)
   const pageRef = useRef(2)
-  const scrollRef = useRef<null | HTMLDivElement>(null)
+
   const fetch = async () => {
     try {
       setIsLoading(true)
@@ -47,6 +48,12 @@ const Home = () => {
     }
   }
 
+  const intersectionObserver = (entries: IntersectionObserverEntry[]) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) fetch()
+    })
+  }
+
   useEffect(() => {
     if (targetRef.current && movies.length && !isLoading && !lastPage) {
       observerRef.current = new IntersectionObserver(intersectionObserver)
@@ -55,20 +62,13 @@ const Home = () => {
     return () => observerRef.current && observerRef.current.disconnect()
   })
 
-  const intersectionObserver = (entries: IntersectionObserverEntry[]) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        fetch()
-      }
-    })
-  }
-
   useEffect(() => {
+    setLasetPage(false)
     scrollToTop()
   }, [searchText])
 
   useEffect(() => {
-    const data = localStorage.getItem('movie')
+    const data = localStorage.getItem('MOVIE_DATA')
     if (data) {
       const parseData = JSON.parse(data)
       setFavoriteMovies(parseData)
@@ -76,7 +76,7 @@ const Home = () => {
     if (movies.length) {
       const setMovie = movies.filter((movie) => movie.Favorites)
       setFavoriteMovies(setMovie)
-      localStorage.setItem('movie', JSON.stringify(setMovie))
+      localStorage.setItem('MOVIE_DATA', JSON.stringify(setMovie))
     }
   }, [movies, setFavoriteMovies])
 

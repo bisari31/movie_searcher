@@ -9,11 +9,14 @@ interface IMovies {
   movie: IMovie
 }
 
+const MAX_LENGTH = 55
+
 const MovieList = ({ movie }: IMovies) => {
   const setShowModal = useSetRecoilState(modalState)
   const setCurrentMovieData = useSetRecoilState<IMovie>(currentMovieDateState)
+
   const checkTitleLength = useCallback((text: string) => {
-    if (text.length > 65) return text.substring(0, 60).concat('...')
+    if (text.length > MAX_LENGTH) return text.substring(0, MAX_LENGTH).concat('...')
     return text
   }, [])
 
