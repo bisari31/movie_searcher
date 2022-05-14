@@ -15,9 +15,9 @@ import {
 } from 'recoil/movie'
 import { getMovieApi } from 'utils/movieApi'
 import ReactLoading from 'react-loading'
-import classNames from 'classnames'
 
 const Home = () => {
+  const [lastPage, setLasetPage] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useRecoilState(loadingState)
   const movies = useRecoilValue(movieDataState)
   const coments = useRecoilValue(searchComentState)
@@ -25,11 +25,10 @@ const Home = () => {
   const setFavoriteMovies = useSetRecoilState(favoriteMovieDataState)
   const searchText = useRecoilValue(inputTextState)
   const setMovies = useSetRecoilState(movieDataState)
-  const [lastPage, setLasetPage] = useState<boolean>(false)
   const observerRef = useRef<IntersectionObserver>()
   const targetRef = useRef<HTMLDivElement>(null)
   const pageRef = useRef(2)
-
+  const scrollRef = useRef<null | HTMLDivElement>(null)
   const fetch = async () => {
     try {
       setIsLoading(true)
@@ -40,16 +39,16 @@ const Home = () => {
         return { ...item, Favorites: false }
       })
       setMovies((prev) => [...prev, ...newData])
-      setIsLoading(false)
       pageRef.current += 1
-      setIsLoading(false)
     } catch (error) {
       setLasetPage(true)
+    } finally {
+      setIsLoading(false)
     }
   }
 
   useEffect(() => {
-    if (targetRef.current && movies.length && !isLoading) {
+    if (targetRef.current && movies.length && !isLoading && !lastPage) {
       observerRef.current = new IntersectionObserver(intersectionObserver)
       targetRef.current && observerRef.current.observe(targetRef.current)
     }
@@ -65,7 +64,7 @@ const Home = () => {
   }
 
   useEffect(() => {
-    setLasetPage(false)
+    scrollToTop()
   }, [searchText])
 
   useEffect(() => {
@@ -81,22 +80,27 @@ const Home = () => {
     }
   }, [movies, setFavoriteMovies])
 
+  const scrollToTop = () => {
+    scrollRef.current?.scrollIntoView(true)
+  }
+
   return (
     <>
       <header>
         <Search />
       </header>
       <main>
-        <div className={styles.wrapper}>
+        <div className={styles.wrapper} ref={scrollRef}>
           {movies.length === 0 && !isLoading ? (
             <span className={styles.comment}>{coments}</span>
           ) : (
             movies.map((movie) => <MovieList key={movie.imdbID} movie={movie} />)
           )}
+
           {isLoading && (
-            <ReactLoading className={styles.loading} type='bubbles' color='#7295cd' height='20%' width='20%' />
+            <ReactLoading className={styles.loading} type='bubbles' color='#7295cd' height='25%' width='25%' />
           )}
-          <div className={classNames(styles.target, { [styles.none]: lastPage })} ref={targetRef} />
+          <div className={styles.target} ref={targetRef} />
           {lastPage && <span className={styles.waring}>마지막 영화 입니다.</span>}
         </div>
         {showModal && <Modal />}

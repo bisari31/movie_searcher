@@ -29,11 +29,6 @@ export const favoriteMovieDataState = atom<IMovie[]>({
   default: [],
 })
 
-export const pageNumberState = atom({
-  key: 'pageNumber',
-  default: 2,
-})
-
 export const modalState = atom({
   key: 'modalState',
   default: false,

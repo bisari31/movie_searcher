@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { RiSearchLine } from 'react-icons/ri'
-import { inputTextState, loadingState, movieDataState, pageNumberState, searchComentState, IMovie } from 'recoil/movie'
+import { inputTextState, loadingState, movieDataState, searchComentState, IMovie } from 'recoil/movie'
 import styles from './searchBar.module.scss'
 import { useSetRecoilState, useResetRecoilState } from 'recoil'
 import { getMovieApi } from 'utils/movieApi'
@@ -15,8 +15,6 @@ const Search = () => {
   const inputRef = useRef<HTMLInputElement>(null)
   const handleChangeText = (e: React.ChangeEvent<HTMLInputElement>) => setInput(e.currentTarget.value)
 
-  const setPage = useSetRecoilState(pageNumberState)
-
   const checkInputText = (text?: string) => {
     if (text) setSearchComent(`${text}에 대한 검색 결과가 없습니다.`)
     if (!text) setSearchComent(`검색어를 입력해 주세요`)
@@ -27,6 +25,7 @@ const Search = () => {
     e.preventDefault()
     if (!input) checkInputText()
     try {
+      setSearchText(input)
       setIsLoading(true)
       const response = await getMovieApi(input, 1)
       const data = await response.data
@@ -35,13 +34,11 @@ const Search = () => {
         return { ...item, Favorites: false }
       })
       setMovies(newData)
-      setSearchText(input)
     } catch (error) {
       checkInputText(input)
     } finally {
       setIsLoading(false)
     }
-    setPage((prev) => prev + 1)
   }
 
   useEffect(() => {
