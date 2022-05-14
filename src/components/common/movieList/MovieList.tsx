@@ -1,9 +1,9 @@
 import styles from './movieList.module.scss'
-import { currentMovieDateState, modalState, IMovie } from 'recoil/movie'
+import { IMovie } from 'types/movieType'
 import cx from 'classnames'
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai'
-import { useSetRecoilState } from 'recoil'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
+import Modal from '../modal/Modal'
 
 interface IMovies {
   movie: IMovie
@@ -12,17 +12,14 @@ interface IMovies {
 const MAX_LENGTH = 55
 
 const MovieList = ({ movie }: IMovies) => {
-  const setShowModal = useSetRecoilState(modalState)
-  const setCurrentMovieData = useSetRecoilState<IMovie>(currentMovieDateState)
-
+  const [modalOn, setModalOn] = useState(false)
   const checkTitleLength = useCallback((text: string) => {
     if (text.length > MAX_LENGTH) return text.substring(0, MAX_LENGTH).concat('...')
     return text
   }, [])
 
   const handleChangeFavorite = () => {
-    setCurrentMovieData(movie)
-    setShowModal((prev) => !prev)
+    setModalOn((prev) => !prev)
   }
 
   return (
@@ -38,9 +35,10 @@ const MovieList = ({ movie }: IMovies) => {
       </div>
       <div className={styles.description}>
         <h2>{checkTitleLength(movie.Title)}</h2>
-        <span>개봉연도: {movie.Year}</span>
+        <span>개봉 연도: {movie.Year}</span>
         <span>장르: {movie.Type}</span>
       </div>
+      {modalOn && <Modal modalOn={modalOn} setModalOn={setModalOn} item={movie} />}
     </div>
   )
 }

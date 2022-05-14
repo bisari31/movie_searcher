@@ -1,28 +1,18 @@
 import { useEffect, useRef, useState } from 'react'
 import styles from './home.module.scss'
 import Search from 'components/searchBar/SearchBar'
-import Modal from 'components/common/modal/Modal'
 import MovieList from 'components/common/movieList/MovieList'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
-import {
-  movieDataState,
-  searchComentState,
-  modalState,
-  loadingState,
-  inputTextState,
-  favoriteMovieDataState,
-  IMovie,
-} from 'recoil/movie'
+import { movieDataState, searchComentState, loadingState, inputTextState } from 'recoil/movieState'
 import { getMovieApi } from 'utils/movieApi'
 import ReactLoading from 'react-loading'
+import { IMovie } from 'types/movieType'
 
 const Home = () => {
   const [lastPage, setLasetPage] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useRecoilState(loadingState)
   const movies = useRecoilValue(movieDataState)
   const coments = useRecoilValue(searchComentState)
-  const showModal = useRecoilValue(modalState)
-  const setFavoriteMovies = useSetRecoilState(favoriteMovieDataState)
   const searchText = useRecoilValue(inputTextState)
   const setMovies = useSetRecoilState(movieDataState)
   const observerRef = useRef<IntersectionObserver>()
@@ -54,6 +44,10 @@ const Home = () => {
     })
   }
 
+  const scrollToTop = () => {
+    scrollRef.current?.scrollIntoView(true)
+  }
+
   useEffect(() => {
     if (targetRef.current && movies.length && !isLoading && !lastPage) {
       observerRef.current = new IntersectionObserver(intersectionObserver)
@@ -66,23 +60,6 @@ const Home = () => {
     setLasetPage(false)
     scrollToTop()
   }, [searchText])
-
-  useEffect(() => {
-    const data = localStorage.getItem('MOVIE_DATA')
-    if (data) {
-      const parseData = JSON.parse(data)
-      setFavoriteMovies(parseData)
-    }
-    if (movies.length) {
-      const setMovie = movies.filter((movie) => movie.Favorites)
-      setFavoriteMovies(setMovie)
-      localStorage.setItem('MOVIE_DATA', JSON.stringify(setMovie))
-    }
-  }, [movies, setFavoriteMovies])
-
-  const scrollToTop = () => {
-    scrollRef.current?.scrollIntoView(true)
-  }
 
   return (
     <>
@@ -103,7 +80,7 @@ const Home = () => {
           <div className={styles.target} ref={targetRef} />
           {lastPage && <span className={styles.waring}>마지막 영화 입니다.</span>}
         </div>
-        {showModal && <Modal />}
+        {/* {showModal && <Modal />} */}
       </main>
     </>
   )

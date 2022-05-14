@@ -1,25 +1,21 @@
-import Modal from 'components/common/modal/Modal'
 import MovieList from 'components/common/movieList/MovieList'
-import { useEffect } from 'react'
-import { useRecoilState, useRecoilValue } from 'recoil'
-import { favoriteMovieDataState, IMovie, modalState, movieDataState } from 'recoil/movie'
+import { useRecoilValue } from 'recoil'
+import { movieDataState } from 'recoil/movieState'
 import styles from './favorites.module.scss'
+import { IMovie } from 'types/movieType'
+import { useEffect, useState } from 'react'
 
 const Favorites = () => {
-  const [favoriteMovies, setFavoriteMovies] = useRecoilState(favoriteMovieDataState)
+  const [favoriteMovies, setFavoriteMovies] = useState([])
   const movies = useRecoilValue(movieDataState)
-  const showModal = useRecoilValue(modalState)
 
   useEffect(() => {
-    const data = localStorage.getItem('MOVIE_DATA')
-    if (data) {
-      const parseData = JSON.parse(data)
-      setFavoriteMovies(parseData)
-    }
-    if (movies.length) {
-      const setMovie = movies.filter((movie) => movie.Favorites)
-      setFavoriteMovies(setMovie)
-      localStorage.setItem('MOVIE_DATA', JSON.stringify(setMovie))
+    const jsonData = localStorage.getItem('MOVIE_LIST')
+    if (jsonData) {
+      const data = JSON.parse(jsonData)
+      setFavoriteMovies(data)
+    } else {
+      setFavoriteMovies([])
     }
   }, [movies, setFavoriteMovies])
 
@@ -32,10 +28,11 @@ const Favorites = () => {
         {favoriteMovies.length
           ? favoriteMovies.map((movie: IMovie) => <MovieList key={movie.imdbID} movie={movie} />)
           : '즐겨찾기를 추가해 주세요'}
-        {showModal && <Modal />}
       </main>
     </>
   )
 }
 
 export default Favorites
+
+export {}

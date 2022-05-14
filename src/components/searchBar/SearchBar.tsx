@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { RiSearchLine } from 'react-icons/ri'
-import { inputTextState, loadingState, movieDataState, searchComentState, IMovie } from 'recoil/movie'
+import { inputTextState, loadingState, movieDataState, searchComentState } from 'recoil/movieState'
 import styles from './searchBar.module.scss'
 import { useSetRecoilState, useResetRecoilState } from 'recoil'
 import { getMovieApi } from 'utils/movieApi'
+import { IMovie } from 'types/movieType'
 
 const Search = () => {
   const setSearchText = useSetRecoilState(inputTextState)
