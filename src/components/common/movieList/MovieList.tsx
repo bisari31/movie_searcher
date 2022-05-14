@@ -1,9 +1,8 @@
 import styles from './movieList.module.scss'
-import { IMovie } from 'types/movie'
+import { currentMovieDateState, modalState, IMovie, movieDataState } from 'recoil/movie'
 import cx from 'classnames'
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai'
-import { useSetRecoilState } from 'recoil'
-import { currentMovieDateState, modalState } from 'recoil/movie'
+import { useRecoilState, useSetRecoilState } from 'recoil'
 import { useCallback, useEffect } from 'react'
 
 interface IMovies {
@@ -12,15 +11,15 @@ interface IMovies {
 
 const MovieList = ({ movie }: IMovies) => {
   const setShowModal = useSetRecoilState(modalState)
-  const setCurrentMovieData = useSetRecoilState(currentMovieDateState)
+  const [currentMovieData, setCurrentMovieData] = useRecoilState<IMovie>(currentMovieDateState)
   const checkTitleLength = useCallback((text: string) => {
     if (text.length > 65) return text.substring(0, 60).concat('...')
     return text
   }, [])
 
   const handleChangeFavorite = () => {
-    setShowModal((prev) => !prev)
     setCurrentMovieData(movie)
+    setShowModal((prev) => !prev)
   }
 
   return (
@@ -28,9 +27,9 @@ const MovieList = ({ movie }: IMovies) => {
       <div className={styles.imgWrapper}>
         <img src={movie.Poster} alt={movie.Title} className={cx({ [styles.noImg]: movie.Poster === 'N/A' })} />
         <div className={styles.iconWrapper}>
-          {movie.Favorite ? <AiFillStar /> : <AiOutlineStar className={styles.outlineIcon} />}
+          {movie.Favorites ? <AiFillStar /> : <AiOutlineStar className={styles.outlineIcon} />}
           <button type='button' onClick={handleChangeFavorite}>
-            {movie.Favorite ? '즐겨찾기 제거' : '즐겨찾기 추가'}
+            {movie.Favorites ? '즐겨찾기 제거' : '즐겨찾기 추가'}
           </button>
         </div>
       </div>

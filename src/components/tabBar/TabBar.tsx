@@ -1,8 +1,8 @@
-import { AiFillStar, AiFillHome } from 'react-icons/ai'
-import { Link, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import styles from './tabBar.module.scss'
 import cx from 'classnames'
+import { AiFillStar, AiFillHome } from 'react-icons/ai'
+import { Link, useLocation } from 'react-router-dom'
 
 const Tab = () => {
   const [isMainPage, setIsMainPage] = useState(true)

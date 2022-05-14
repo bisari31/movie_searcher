@@ -1,6 +1,6 @@
+import styles from './layout.module.scss'
 import Tab from 'components/tabBar/TabBar'
 import { Outlet } from 'react-router-dom'
-import styles from './layout.module.scss'
 
 const Layout = () => {
   return (

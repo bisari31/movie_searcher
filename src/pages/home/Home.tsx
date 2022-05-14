@@ -1,44 +1,110 @@
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import styles from './home.module.scss'
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
-import { movieDataState, searchComentState, modalState, pageNumberState, loadingState } from 'recoil/movie'
 import Search from 'components/searchBar/SearchBar'
-import MovieList from 'components/common/movieList/MovieList'
-import { IMovie } from 'types/movie'
-import { useRef, useState } from 'react'
 import Modal from 'components/common/modal/Modal'
+import MovieList from 'components/common/movieList/MovieList'
+import { useRecoilState, useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil'
+import {
+  movieDataState,
+  searchComentState,
+  modalState,
+  pageNumberState,
+  loadingState,
+  inputTextState,
+  favoriteMovieDataState,
+  IMovie,
+} from 'recoil/movie'
+import { getMovieApi } from 'utils/movieApi'
+import ReactLoading from 'react-loading'
+import classNames from 'classnames'
 
 const Home = () => {
+  // const setSearchComent = useSetRecoilState(searchComentState)
+  // const checkInputText = (text?: string) => {
+  //   if (text) setSearchComent(`${text}에 대한 검색 결과가 없습니다.`)
+  //   if (!text) setSearchComent(`검색어를 입력해 주세요`)
+  //   resetState()
+  // }
   const [isLoading, setIsLoading] = useRecoilState(loadingState)
-  const movies: IMovie[] = useRecoilValue(movieDataState)
+  const movies = useRecoilValue(movieDataState)
   const coments = useRecoilValue(searchComentState)
   const showModal = useRecoilValue(modalState)
-  const setPageNumber = useSetRecoilState(pageNumberState)
-  const observerRef = useRef(null)
-  // const onserver = (node) => {
-  //   if (isLoading) return
-  //   if (observerRef.current) observerRef.current.disconnect()
+  const setFavoriteMovies = useSetRecoilState(favoriteMovieDataState)
+  const [searchText, setSearchText] = useRecoilState(inputTextState)
+  const setMovies = useSetRecoilState(movieDataState)
+  const [lastPage, setLasetPage] = useState(false)
+  const observerRef = useRef<IntersectionObserver>()
+  const targetRef = useRef<HTMLDivElement>(null)
+  const pageRef = useRef(2)
+  const fetch = async () => {
+    try {
+      setIsLoading(true)
+      const response = await getMovieApi(searchText, pageRef.current)
+      const data = await response.data
+      if (data.Response === 'False') throw new Error(data.Error)
+      const newData = data.Search.map((item: IMovie) => {
+        return { ...item, Favorites: false }
+      })
+      setMovies((prev) => [...prev, ...newData])
+      setIsLoading(false)
+      pageRef.current += 1
+      setIsLoading(false)
+    } catch (error) {
+      setLasetPage(true)
+    }
+  }
+  console.log(searchText)
+  useEffect(() => {
+    console.log(pageRef.current)
+  }, [pageRef])
 
-  //   observerRef.current = new IntersectionObserver(([entry]) => {
-  //     if (entry.isIntersecting && hasMore) {
-  //       setPageNumber((prev) => prev + 1)
-  //     }
-  //   })
-  //   node && observerRef.current.observe(node)
-  // }
+  useEffect(() => {
+    if (targetRef.current && movies.length && !isLoading) {
+      observerRef.current = new IntersectionObserver(intersectionObserver)
+      targetRef.current && observerRef.current.observe(targetRef.current)
+    }
+    return () => observerRef.current && observerRef.current.disconnect()
+  })
+
+  const intersectionObserver = (entries: IntersectionObserverEntry[]) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        fetch()
+      }
+    })
+  }
+
+  useEffect(() => {
+    const data = localStorage.getItem('movie')
+    if (data) {
+      const parseData = JSON.parse(data)
+      setFavoriteMovies(parseData)
+    }
+    if (movies.length) {
+      const setMovie = movies.filter((movie) => movie.Favorites)
+      console.log(setMovie)
+      setFavoriteMovies(setMovie)
+      localStorage.setItem('movie', JSON.stringify(setMovie))
+    }
+  }, [movies, setFavoriteMovies])
+
   return (
     <>
       <header>
-        <Search />
+        <Search setLastPage={lastPage} />
       </header>
       <main>
         <div className={styles.wrapper}>
           {movies.length === 0 && !isLoading ? (
             <span className={styles.comment}>{coments}</span>
           ) : (
-            movies.map((movie, index) => <MovieList key={`movieList-${index}`} movie={movie} />)
+            movies.map((movie) => <MovieList key={movie.imdbID} movie={movie} />)
           )}
-          <div ref={observerRef} />
-          {isLoading && <span className={styles.loading}>loading......</span>}
+          {isLoading && (
+            <ReactLoading className={styles.loading} type='bubbles' color='#7295cd' height='20%' width='20%' />
+          )}
+          <div className={classNames(styles.target, { [styles.none]: lastPage })} ref={targetRef} />
+          {lastPage && <span className={styles.waring}>마지막 영화 입니다.</span>}
         </div>
         {showModal && <Modal />}
       </main>

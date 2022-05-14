@@ -1,7 +1,15 @@
 import { atom } from 'recoil'
-// import { localStorageEffect } from 'utils/localStorage'
 
-export const movieDataState = atom({
+export interface IMovie {
+  Poster: string
+  Title: string
+  Type: string
+  Year: string
+  imdbID: string
+  Favorites: boolean
+}
+
+export const movieDataState = atom<IMovie[]>({
   key: 'movieDataState',
   default: [],
 })
@@ -16,14 +24,14 @@ export const inputTextState = atom({
   default: '',
 })
 
-export const favoriteMovieDataState = atom({
+export const favoriteMovieDataState = atom<IMovie[]>({
   key: 'favoriteMoviesState',
   default: [],
 })
 
 export const pageNumberState = atom({
   key: 'pageNumber',
-  default: 1,
+  default: 2,
 })
 
 export const modalState = atom({
@@ -33,16 +41,17 @@ export const modalState = atom({
 
 export const currentMovieDateState = atom({
   key: 'currentMovieDateState',
-  default: null,
+  default: {
+    Poster: 'url',
+    Title: 'movieName',
+    Type: 'movie',
+    Year: 'Year',
+    imdbID: 'imdbId',
+    Favorites: false,
+  },
 })
 
 export const loadingState = atom({
   key: 'loadingState',
   default: false,
 })
-
-// export const favoriteMovieList = atom({
-//   key: 'favoriteMovieList',
-//   default: [],
-//   effects: [localStorageEffect('favoriteMovieList')],
-// })
