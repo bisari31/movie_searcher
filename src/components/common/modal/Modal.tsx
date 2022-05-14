@@ -1,16 +1,14 @@
-import { useRecoilState, useSetRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import styles from './modal.module.scss'
 import { currentMovieDateState, modalState, movieDataState, IMovie, favoriteMovieDataState } from 'recoil/movie'
-import { useRef, useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useRef, useEffect } from 'react'
 
 const Modal = () => {
   const [showModal, setShowModal] = useRecoilState(modalState)
-  const [currentMovieData, setCurrentMovieData] = useRecoilState<IMovie>(currentMovieDateState)
-  const [movieData, setMovieData] = useRecoilState(movieDataState)
-  const [favoriteData, setFavoriteData] = useRecoilState(favoriteMovieDataState)
+  const currentMovieData = useRecoilValue<IMovie>(currentMovieDateState)
+  const setMovieData = useSetRecoilState(movieDataState)
+  const setFavoriteData = useSetRecoilState(favoriteMovieDataState)
   const ref = useRef<HTMLDivElement>(null)
-  const location = useLocation()
   const handleCloseModal = () => {
     setShowModal((prev) => !prev)
     return false
@@ -29,7 +27,6 @@ const Modal = () => {
       )
     )
     handleCloseModal()
-    // setFavoriteData((prev) => [...prev, currentMovieData])
     setFavoriteData((prev) => prev.filter((movie) => movie.imdbID !== currentMovieData.imdbID))
   }
 
@@ -39,10 +36,6 @@ const Modal = () => {
       document.removeEventListener('mousedown', handleClickOutSide)
     }
   })
-
-  useEffect(() => {
-    console.log(currentMovieData)
-  }, [movieData])
 
   return (
     <div className={styles.wrapper}>

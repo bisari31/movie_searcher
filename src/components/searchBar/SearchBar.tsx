@@ -1,12 +1,12 @@
-import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { RiSearchLine } from 'react-icons/ri'
 import { inputTextState, loadingState, movieDataState, pageNumberState, searchComentState, IMovie } from 'recoil/movie'
 import styles from './searchBar.module.scss'
-import { useSetRecoilState, useResetRecoilState, useRecoilState } from 'recoil'
+import { useSetRecoilState, useResetRecoilState } from 'recoil'
 import { getMovieApi } from 'utils/movieApi'
 
-const Search = ({ setLastPage }) => {
-  const [searchText, setSearchText] = useRecoilState(inputTextState)
+const Search = () => {
+  const setSearchText = useSetRecoilState(inputTextState)
   const setMovies = useSetRecoilState(movieDataState)
   const setSearchComent = useSetRecoilState(searchComentState)
   const resetState = useResetRecoilState(movieDataState)
@@ -15,7 +15,7 @@ const Search = ({ setLastPage }) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const handleChangeText = (e: React.ChangeEvent<HTMLInputElement>) => setInput(e.currentTarget.value)
 
-  const [page, setPage] = useRecoilState(pageNumberState)
+  const setPage = useSetRecoilState(pageNumberState)
 
   const checkInputText = (text?: string) => {
     if (text) setSearchComent(`${text}에 대한 검색 결과가 없습니다.`)
@@ -27,7 +27,6 @@ const Search = ({ setLastPage }) => {
     e.preventDefault()
     if (!input) checkInputText()
     try {
-      setLastPage(false)
       setIsLoading(true)
       const response = await getMovieApi(input, 1)
       const data = await response.data

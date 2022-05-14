@@ -1,6 +1,6 @@
 import Modal from 'components/common/modal/Modal'
 import MovieList from 'components/common/movieList/MovieList'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { favoriteMovieDataState, IMovie, modalState, movieDataState } from 'recoil/movie'
 import styles from './favorites.module.scss'
@@ -9,19 +9,7 @@ const Favorites = () => {
   const [favoriteMovies, setFavoriteMovies] = useRecoilState(favoriteMovieDataState)
   const movies = useRecoilValue(movieDataState)
   const showModal = useRecoilValue(modalState)
-  // const [returnState, setReturnStatse] = useRecoilState(returnState)
-  // useEffect(() => {
-  //   const data: any = localStorage.getItem('movie') || []
-  //   setFavoriteMovies(JSON.parse(data))
-  // }, [setFavoriteMovies])
 
-  // useEffect(() => {
-  //   const data = localStorage.getItem('movie')
-  //   if (data) {
-  //     const parseData = JSON.parse(data)
-  //     setFavoriteMovies(parseData)
-  //   }
-  // }, [movies, setFavoriteMovies])
   useEffect(() => {
     const data = localStorage.getItem('movie')
     if (data) {
@@ -31,7 +19,6 @@ const Favorites = () => {
     if (movies.length) {
       const setMovie = movies.filter((movie) => movie.Favorites)
       setFavoriteMovies(setMovie)
-      console.log(setMovie)
       localStorage.setItem('movie', JSON.stringify(setMovie))
     }
   }, [movies, setFavoriteMovies])

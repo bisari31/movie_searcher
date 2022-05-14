@@ -1,14 +1,13 @@
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styles from './home.module.scss'
 import Search from 'components/searchBar/SearchBar'
 import Modal from 'components/common/modal/Modal'
 import MovieList from 'components/common/movieList/MovieList'
-import { useRecoilState, useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import {
   movieDataState,
   searchComentState,
   modalState,
-  pageNumberState,
   loadingState,
   inputTextState,
   favoriteMovieDataState,
@@ -19,23 +18,18 @@ import ReactLoading from 'react-loading'
 import classNames from 'classnames'
 
 const Home = () => {
-  // const setSearchComent = useSetRecoilState(searchComentState)
-  // const checkInputText = (text?: string) => {
-  //   if (text) setSearchComent(`${text}에 대한 검색 결과가 없습니다.`)
-  //   if (!text) setSearchComent(`검색어를 입력해 주세요`)
-  //   resetState()
-  // }
   const [isLoading, setIsLoading] = useRecoilState(loadingState)
   const movies = useRecoilValue(movieDataState)
   const coments = useRecoilValue(searchComentState)
   const showModal = useRecoilValue(modalState)
   const setFavoriteMovies = useSetRecoilState(favoriteMovieDataState)
-  const [searchText, setSearchText] = useRecoilState(inputTextState)
+  const searchText = useRecoilValue(inputTextState)
   const setMovies = useSetRecoilState(movieDataState)
-  const [lastPage, setLasetPage] = useState(false)
+  const [lastPage, setLasetPage] = useState<boolean>(false)
   const observerRef = useRef<IntersectionObserver>()
   const targetRef = useRef<HTMLDivElement>(null)
   const pageRef = useRef(2)
+
   const fetch = async () => {
     try {
       setIsLoading(true)
@@ -53,10 +47,6 @@ const Home = () => {
       setLasetPage(true)
     }
   }
-  console.log(searchText)
-  useEffect(() => {
-    console.log(pageRef.current)
-  }, [pageRef])
 
   useEffect(() => {
     if (targetRef.current && movies.length && !isLoading) {
@@ -75,6 +65,10 @@ const Home = () => {
   }
 
   useEffect(() => {
+    setLasetPage(false)
+  }, [searchText])
+
+  useEffect(() => {
     const data = localStorage.getItem('movie')
     if (data) {
       const parseData = JSON.parse(data)
@@ -82,7 +76,6 @@ const Home = () => {
     }
     if (movies.length) {
       const setMovie = movies.filter((movie) => movie.Favorites)
-      console.log(setMovie)
       setFavoriteMovies(setMovie)
       localStorage.setItem('movie', JSON.stringify(setMovie))
     }
@@ -91,7 +84,7 @@ const Home = () => {
   return (
     <>
       <header>
-        <Search setLastPage={lastPage} />
+        <Search />
       </header>
       <main>
         <div className={styles.wrapper}>

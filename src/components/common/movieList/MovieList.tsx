@@ -1,9 +1,9 @@
 import styles from './movieList.module.scss'
-import { currentMovieDateState, modalState, IMovie, movieDataState } from 'recoil/movie'
+import { currentMovieDateState, modalState, IMovie } from 'recoil/movie'
 import cx from 'classnames'
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai'
-import { useRecoilState, useSetRecoilState } from 'recoil'
-import { useCallback, useEffect } from 'react'
+import { useSetRecoilState } from 'recoil'
+import { useCallback } from 'react'
 
 interface IMovies {
   movie: IMovie
@@ -11,7 +11,7 @@ interface IMovies {
 
 const MovieList = ({ movie }: IMovies) => {
   const setShowModal = useSetRecoilState(modalState)
-  const [currentMovieData, setCurrentMovieData] = useRecoilState<IMovie>(currentMovieDateState)
+  const setCurrentMovieData = useSetRecoilState<IMovie>(currentMovieDateState)
   const checkTitleLength = useCallback((text: string) => {
     if (text.length > 65) return text.substring(0, 60).concat('...')
     return text
