@@ -8,8 +8,10 @@
 </div>
 <br/>
 
+
+## 영화 검색 App
+
 <ul>
-  <li>영화 검색 App</li>
   <li>즐겨찾기 기능을 추가하여 저장할 수 있다</li>
   <li>즐겨찾기 영화 localstorage 저장</li>
   <li>검색 페이지 무한 스크롤 구현</li>
@@ -60,11 +62,11 @@ Preview
 <img src="https://user-images.githubusercontent.com/98396758/168460118-aa5307fd-fc90-4316-af7d-77d5ec320b4c.gif" width="350px">
 
 
-초기화면  
-검색중인 목록이 없으면 검색 결과가 없습니다. 알림  
+초기화면 
+검색중인 목록이 없으면 검색 결과가 없습니다 알림  
 하단 탭바는 
 메인, 즐겨찾기로 구성  
-요청한 영화가 없을경우 메시지 알림  
+요청한 영화가 없을 경우 메시지 알림  
 
 
 <img src="https://user-images.githubusercontent.com/98396758/168459660-47bcb688-d848-4945-a830-6b5a445979d0.gif" width="350px">
