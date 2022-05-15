@@ -3,7 +3,13 @@ import styles from './home.module.scss'
 import Search from 'components/searchBar/SearchBar'
 import MovieList from 'components/common/movieList/MovieList'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
-import { movieDataState, searchComentState, loadingState, inputTextState } from 'recoil/movieState'
+import {
+  movieDataState,
+  searchComentState,
+  loadingState,
+  inputTextState,
+  favoriteMovieDataState,
+} from 'recoil/movieState'
 import { getMovieApi } from 'utils/movieApi'
 import ReactLoading from 'react-loading'
 import { IMovie } from 'types/movieType'
@@ -18,6 +24,7 @@ const Home = () => {
   const observerRef = useRef<IntersectionObserver>()
   const targetRef = useRef<HTMLDivElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
+  const favoriteMovies = useRecoilValue(favoriteMovieDataState)
   const pageRef = useRef(2)
 
   const getApi = useCallback(async () => {
@@ -32,7 +39,21 @@ const Home = () => {
       const newData = data.Search.map((item: IMovie) => {
         return { ...item, Favorites: false }
       })
-      setMovies((prev) => [...prev, ...newData])
+      const resultArray = () => {
+        const lastArr: IMovie[] = []
+        for (let i = 0; i < newData.length; i += 1) {
+          for (let j = 0; j < favoriteMovies.length; j += 1) {
+            if (newData[i].imdbID === favoriteMovies[j].imdbID) {
+              lastArr.push(favoriteMovies[j])
+              i += 1
+            }
+          }
+          lastArr.push(newData[i])
+        }
+        return lastArr
+      }
+      const arr = resultArray()
+      setMovies((prev) => [...prev, ...arr])
       pageRef.current += 1
       localStorage.setItem('key', JSON.stringify(pageRef.current))
     } catch (error) {
@@ -40,7 +61,7 @@ const Home = () => {
     } finally {
       setIsLoading(false)
     }
-  }, [searchText, setIsLoading, setMovies])
+  }, [favoriteMovies, searchText, setIsLoading, setMovies])
 
   const intersectionObserver = (entries: IntersectionObserverEntry[]) => {
     entries.forEach((entry) => {
