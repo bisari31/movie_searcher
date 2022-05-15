@@ -48,10 +48,6 @@ const Home = () => {
     })
   }
 
-  useEffect(() => {
-    console.log(pageRef)
-  })
-
   const scrollToTop = () => {
     scrollRef.current?.scrollIntoView(true)
   }

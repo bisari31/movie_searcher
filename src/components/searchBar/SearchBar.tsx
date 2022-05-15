@@ -8,18 +8,19 @@ import {
   searchComentState,
 } from 'recoil/movieState'
 import styles from './searchBar.module.scss'
-import { useSetRecoilState, useResetRecoilState, useRecoilValue } from 'recoil'
+import { useSetRecoilState, useResetRecoilState, useRecoilValue, useRecoilState } from 'recoil'
 import { getMovieApi } from 'utils/movieApi'
 import { IMovie } from 'types/movieType'
+import Favorites from 'pages/favorites/Favorites'
 
 const Search = () => {
   const [input, setInput] = useState('')
+  const [favoriteMovies, setFavoriteMovies] = useRecoilState(favoriteMovieDataState)
   const setSearchText = useSetRecoilState(inputTextState)
   const setMovies = useSetRecoilState(movieDataState)
   const setSearchComent = useSetRecoilState(searchComentState)
   const resetMovie = useResetRecoilState(movieDataState)
   const setIsLoading = useSetRecoilState(loadingState)
-  const favoriteMovies = useRecoilValue(favoriteMovieDataState)
   const inputRef = useRef<HTMLInputElement>(null)
   const handleChangeText = (e: React.ChangeEvent<HTMLInputElement>) => setInput(e.currentTarget.value)
 
@@ -46,6 +47,21 @@ const Search = () => {
         const newData = data.Search.map((item: IMovie) => {
           return { ...item, Favorites: false }
         })
+
+        // const result = newData.map((item:IMovie) => {
+        //   favoriteMovies.forEach((fmITem:IMovie) => {
+        //     if (item.imdbID === fmITem.imdbID) return (fmITem) 
+        //   })
+        //   return item
+        // })
+
+        // const result = favoriteMovies.filter((item: IMovie) => {
+        //   let flag = false
+        //   newData.forEach((fmItem: IMovie) => {
+        //     if (item.imdbID === fmItem.imdbID) flag = true
+        //   })
+        //   return flag
+        // })
         setMovies(newData)
       } catch (error) {
         checkInputText(input)
@@ -53,10 +69,15 @@ const Search = () => {
         setIsLoading(false)
       }
     },
-    [checkInputText, input, setIsLoading, setMovies, setSearchText]
+    [checkInputText, favoriteMovies, input, setIsLoading, setMovies, setSearchText]
   )
 
   useEffect(() => {
+    const jsonData = localStorage.getItem('MOVIE_LIST')
+    if (jsonData) {
+      const fmData = JSON.parse(jsonData)
+      setFavoriteMovies(fmData)
+    }
     inputRef.current?.focus()
   }, [])
 
