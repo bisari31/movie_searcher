@@ -1,8 +1,8 @@
+import React, { useCallback, useState } from 'react'
 import styles from './movieList.module.scss'
 import { IMovie } from 'types/movieType'
 import cx from 'classnames'
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai'
-import { useCallback, useState } from 'react'
 import Modal from '../modal/Modal'
 
 interface IMovies {
@@ -35,7 +35,7 @@ const MovieList = ({ movie }: IMovies) => {
       </div>
       <div className={styles.description}>
         <h2>{checkTitleLength(movie.Title)}</h2>
-        <span>개봉 연도: {movie.Year}</span>
+        <span>개봉: {movie.Year}</span>
         <span>장르: {movie.Type}</span>
       </div>
       {modalOn && <Modal modalOn={modalOn} setModalOn={setModalOn} item={movie} />}
@@ -43,4 +43,4 @@ const MovieList = ({ movie }: IMovies) => {
   )
 }
 
-export default MovieList
+export default React.memo(MovieList)

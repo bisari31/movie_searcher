@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import styles from './home.module.scss'
 import Search from 'components/searchBar/SearchBar'
 import MovieList from 'components/common/movieList/MovieList'
@@ -20,8 +20,11 @@ const Home = () => {
   const scrollRef = useRef<HTMLDivElement>(null)
   const pageRef = useRef(2)
 
-  const fetch = async () => {
+  const getApi = useCallback(async () => {
     try {
+      const key = localStorage.getItem('key')
+      if (key) pageRef.current = JSON.parse(key)
+      else pageRef.current = 2
       setIsLoading(true)
       const response = await getMovieApi(searchText, pageRef.current)
       const data = await response.data
@@ -31,18 +34,23 @@ const Home = () => {
       })
       setMovies((prev) => [...prev, ...newData])
       pageRef.current += 1
+      localStorage.setItem('key', JSON.stringify(pageRef.current))
     } catch (error) {
       setLasetPage(true)
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [searchText, setIsLoading, setMovies])
 
   const intersectionObserver = (entries: IntersectionObserverEntry[]) => {
     entries.forEach((entry) => {
-      if (entry.isIntersecting) fetch()
+      if (entry.isIntersecting) getApi()
     })
   }
+
+  useEffect(() => {
+    console.log(pageRef)
+  })
 
   const scrollToTop = () => {
     scrollRef.current?.scrollIntoView(true)

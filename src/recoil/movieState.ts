@@ -16,6 +16,11 @@ export const inputTextState = atom({
   default: '',
 })
 
+export const favoriteMovieDataState = atom<IMovie[]>({
+  key: 'favoriteMoviesState',
+  default: [],
+})
+
 export const loadingState = atom({
   key: 'loadingState',
   default: false,

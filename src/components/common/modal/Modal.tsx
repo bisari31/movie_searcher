@@ -12,7 +12,6 @@ interface IProps {
 
 const Modal = ({ modalOn, item, setModalOn }: IProps) => {
   const setMovies = useSetRecoilState(movieDataState)
-
   const ref = useRef<HTMLDivElement>(null)
 
   const handleCloseModal = useCallback(() => {
@@ -29,14 +28,15 @@ const Modal = ({ modalOn, item, setModalOn }: IProps) => {
     const newItem = { ...item, Favorites: !item.Favorites }
     handleCloseModal()
     setMovies((prev) =>
-      prev.map((prevMovie) =>
-        prevMovie.imdbID === item.imdbID ? { ...prevMovie, Favorites: !prevMovie.Favorites } : prevMovie
+      prev.map((movieItem) =>
+        movieItem.imdbID === item.imdbID ? { ...movieItem, Favorites: !movieItem.Favorites } : movieItem
       )
     )
     const jsonData = localStorage.getItem('MOVIE_LIST')
     if (jsonData) {
       const data = JSON.parse(jsonData)
       const overlap = data.filter((movie: IMovie) => movie.imdbID !== item.imdbID)
+
       if (data.length === overlap.length) {
         localStorage.setItem('MOVIE_LIST', JSON.stringify([...overlap, newItem]))
       } else {

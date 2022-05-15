@@ -1,12 +1,12 @@
 import MovieList from 'components/common/movieList/MovieList'
-import { useRecoilValue } from 'recoil'
-import { movieDataState } from 'recoil/movieState'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { favoriteMovieDataState, movieDataState } from 'recoil/movieState'
 import styles from './favorites.module.scss'
 import { IMovie } from 'types/movieType'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 const Favorites = () => {
-  const [favoriteMovies, setFavoriteMovies] = useState([])
+  const [favoriteMovies, setFavoriteMovies] = useRecoilState(favoriteMovieDataState)
   const movies = useRecoilValue(movieDataState)
 
   useEffect(() => {
@@ -34,5 +34,3 @@ const Favorites = () => {
 }
 
 export default Favorites
-
-export {}

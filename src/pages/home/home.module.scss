@@ -28,10 +28,18 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: colors.$FONT_COLOR;
   }
 
   .comment {
+    width: 100%;
+    font-size: 1.5rem;
+    font-weight: 600;
     line-height: 150%;
+    color: colors.$FONT_COLOR;
+    word-wrap: break-word;
   }
 
   .target {
