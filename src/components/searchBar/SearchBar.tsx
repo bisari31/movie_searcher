@@ -34,6 +34,7 @@ const Search = () => {
   )
 
   const getApi = useCallback(
+    // eslint-disable-next-line consistent-return
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
       if (!input) checkInputText()
@@ -48,21 +49,21 @@ const Search = () => {
           return { ...item, Favorites: false }
         })
 
-        // const result = newData.map((item:IMovie) => {
-        //   favoriteMovies.forEach((fmITem:IMovie) => {
-        //     if (item.imdbID === fmITem.imdbID) return (fmITem) 
-        //   })
-        //   return item
-        // })
-
-        // const result = favoriteMovies.filter((item: IMovie) => {
-        //   let flag = false
-        //   newData.forEach((fmItem: IMovie) => {
-        //     if (item.imdbID === fmItem.imdbID) flag = true
-        //   })
-        //   return flag
-        // })
-        setMovies(newData)
+        const resultArray = () => {
+          const lastArr: IMovie[] = []
+          for (let i = 0; i < newData.length; i += 1) {
+            for (let j = 0; j < favoriteMovies.length; j += 1) {
+              if (newData[i].imdbID === favoriteMovies[j].imdbID) {
+                lastArr.push(favoriteMovies[j])
+                i += 1
+              }
+            }
+            lastArr.push(newData[i])
+          }
+          return lastArr
+        }
+        const arr = resultArray()
+        setMovies(arr)
       } catch (error) {
         checkInputText(input)
       } finally {
