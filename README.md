@@ -1,6 +1,5 @@
-## 영화 검색 App
+# 영화 검색 App
 
-### 원티드 프리온보딩 기업 사전과제(개인) -그립컴퍼니
 
 <div>
 <img src="https://img.shields.io/badge/TypeScript-v4.4.2-blue"/>
@@ -17,6 +16,12 @@
 <li>페이지 끝에 도달하면 알림</li>
 <li>초기 로드된 데이터와 스토리지 데이터와 비교하여 즐겨찾기 저장</li>
 </ul>
+
+## Depoly
+
+https://moviesearcherappp.netlify.app/
+
+<br/>
 
 ## Installation
 
