@@ -8,10 +8,9 @@ import {
   searchComentState,
 } from 'recoil/movieState'
 import styles from './searchBar.module.scss'
-import { useSetRecoilState, useResetRecoilState, useRecoilValue, useRecoilState } from 'recoil'
+import { useSetRecoilState, useResetRecoilState, useRecoilState } from 'recoil'
 import { getMovieApi } from 'utils/movieApi'
 import { IMovie } from 'types/movieType'
-import Favorites from 'pages/favorites/Favorites'
 
 const Search = () => {
   const [input, setInput] = useState('')
@@ -34,7 +33,6 @@ const Search = () => {
   )
 
   const getApi = useCallback(
-    // eslint-disable-next-line consistent-return
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
       if (!input) checkInputText()
@@ -80,6 +78,7 @@ const Search = () => {
       setFavoriteMovies(fmData)
     }
     inputRef.current?.focus()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
