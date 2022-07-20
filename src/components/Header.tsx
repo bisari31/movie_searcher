@@ -32,26 +32,31 @@ const StyledHeader = styled.header`
     }
 
     button {
-      border: none;
-      background: none;
-      display: flex;
       align-items: center;
+      background: none;
+      border: none;
+      display: flex;
       justify-content: center;
-      position: absolute;
       padding: 0;
+      position: absolute;
     }
 
     button:nth-of-type(1) {
       left: 20px;
     }
     button:nth-of-type(2) {
+      display: none;
       right: 20px;
+    }
+    button + .on {
+      display: flex;
     }
   }
 `;
 
 export default function Header() {
   const [text, setText] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const navigate = useNavigate();
@@ -81,6 +86,10 @@ export default function Header() {
   };
 
   useEffect(() => {
+    setIsTyping(!!text);
+  }, [text]);
+
+  useEffect(() => {
     const state = location.state as string;
     if (location.pathname !== '/') setText(state);
     inputRef.current?.focus();
@@ -99,7 +108,12 @@ export default function Header() {
         <button type="button" onClick={handleSubmitFetchData}>
           <Search fill="#999ca5" width={23} />
         </button>
-        <button type="button" onClick={handleDeleteText}>
+
+        <button
+          type="button"
+          className={isTyping ? 'on' : undefined}
+          onClick={handleDeleteText}
+        >
           <Delete width={25} fill="#999ca5" />
         </button>
       </form>
