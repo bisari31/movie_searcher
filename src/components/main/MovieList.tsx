@@ -1,5 +1,7 @@
 import { useAppSelector } from 'hooks';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
+
 import MovieItem from './MovieItem';
 
 const StyledMovieList = styled.ul`
@@ -10,8 +12,13 @@ const StyledMovieList = styled.ul`
 `;
 
 export default function MovieList() {
-  const movies = useAppSelector((state) => state.movies.movies);
-  console.log(movies);
+  const { movies, isError } = useAppSelector((state) => state.movies);
+
+  const location = useLocation();
+  const state = location.state as string;
+
+  if (isError) return <div>{state}에 대한 검색결과가 없습니다.</div>;
+
   return (
     <StyledMovieList>
       {movies.map((movie, index) => (

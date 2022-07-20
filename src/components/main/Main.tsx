@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+
 import MovieList from './MovieList';
 
 const StyledMain = styled.main`

@@ -1,10 +1,10 @@
 # 영화 검색 App
 
 <div>
-<img src="https://img.shields.io/badge/TypeScript-v4.4.2-blue"/>
-<img src="https://img.shields.io/badge/React-v18.1.0-blue"/>
-<img src="https://img.shields.io/badge/Recoil-v0.7.3 alpha 2-blue"/>
-<img src="https://img.shields.io/badge/React Router Dom-v6.3.0-blue"/>
+<img src="https://img.shields.io/badge/React-v18.2.0-blue"/>
+<img src="https://img.shields.io/badge/TypeScript-v4.7.4-blue"/>
+<img src="https://img.shields.io/badge/Redux toolkit-v1.8.3-blueviolet"/>
+<img src="https://img.shields.io/badge/React Router Dom-v6.3.0-red"/>
 </div>
 <br/>
 

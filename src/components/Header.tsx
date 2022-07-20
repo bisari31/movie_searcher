@@ -1,10 +1,11 @@
 import styled from 'styled-components';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import { Delete, Search } from 'assets/svg';
-import { ChangeEvent, FormEvent, useState } from 'react';
 import { getFetchData } from 'services/todo';
-import { useDispatch } from 'react-redux';
-import { addMovies } from 'states/movies';
+import { addMovies, checkError } from 'states/movies';
 
 const StyledHeader = styled.header`
   align-items: center;
@@ -29,12 +30,21 @@ const StyledHeader = styled.header`
     input::placeholder {
       color: #999ca5;
     }
-    svg:nth-of-type(1) {
-      left: 20px;
+
+    button {
+      border: none;
+      background: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       position: absolute;
+      padding: 0;
     }
-    svg:nth-of-type(2) {
-      position: absolute;
+
+    button:nth-of-type(1) {
+      left: 20px;
+    }
+    button:nth-of-type(2) {
       right: 20px;
     }
   }
@@ -42,30 +52,56 @@ const StyledHeader = styled.header`
 
 export default function Header() {
   const [text, setText] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
 
+  const navigate = useNavigate();
+  const location = useLocation();
   const disaptch = useDispatch();
 
-  const onChangeText = (e: ChangeEvent<HTMLInputElement>) =>
+  const handleChangeText = (e: ChangeEvent<HTMLInputElement>) =>
     setText(e.currentTarget.value);
 
-  const onSubmitFetchData = (e: FormEvent) => {
+  const handleSubmitFetchData = (e: FormEvent) => {
     e.preventDefault();
-    getFetchData(text).then((res) => {
-      disaptch(addMovies(res.data.Search));
-    });
+    getFetchData(text)
+      .then((res) => {
+        navigate(`/search/${text}`, {
+          state: text,
+        });
+        if (res.data.Response === 'False') throw new Error();
+        disaptch(checkError(false));
+        disaptch(addMovies(res.data.Search));
+      })
+      .catch(() => disaptch(checkError(true)));
   };
+
+  const handleDeleteText = () => {
+    setText('');
+    inputRef.current?.focus();
+  };
+
+  useEffect(() => {
+    const state = location.state as string;
+    if (location.pathname !== '/') setText(state);
+    inputRef.current?.focus();
+  }, []);
 
   return (
     <StyledHeader>
-      <form action="" onSubmit={onSubmitFetchData}>
+      <form action="" onSubmit={handleSubmitFetchData}>
         <input
+          ref={inputRef}
           type="text"
           value={text}
-          onChange={onChangeText}
+          onChange={handleChangeText}
           placeholder="Search movie"
         />
-        <Search fill="#999ca5" width={23} />
-        <Delete width={25} fill="#999ca5" />
+        <button type="button" onClick={handleSubmitFetchData}>
+          <Search fill="#999ca5" width={23} />
+        </button>
+        <button type="button" onClick={handleDeleteText}>
+          <Delete width={25} fill="#999ca5" />
+        </button>
       </form>
     </StyledHeader>
   );

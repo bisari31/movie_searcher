@@ -3,9 +3,10 @@ import { ISearch } from 'types/movie';
 
 interface IMovies {
   movies: ISearch[];
+  isError: boolean;
 }
 
-const initialState: IMovies = { movies: [] };
+const initialState: IMovies = { movies: [], isError: false };
 
 const movieSlice = createSlice({
   name: 'movieSlice',
@@ -14,9 +15,12 @@ const movieSlice = createSlice({
     addMovies(state, action) {
       state.movies = action.payload;
     },
+    checkError(state, action) {
+      state.isError = action.payload;
+    },
   },
 });
 
-export const { addMovies } = movieSlice.actions;
+export const { addMovies, checkError } = movieSlice.actions;
 
 export default movieSlice.reducer;

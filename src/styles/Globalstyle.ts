@@ -31,7 +31,6 @@ const GlobalStyle = createGlobalStyle`
     color: #fff;
     padding: 0 25px;
   }
-
 `;
 
 export default GlobalStyle;
