@@ -1,8 +1,8 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import todoSlice from './todos';
+import movieSlice from './movies';
 
 const rootReducer = combineReducers({
-  todos: todoSlice,
+  movies: movieSlice,
 });
 
 const store = configureStore({

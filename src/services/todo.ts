@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IData } from 'types/movies';
+import { IData } from 'types/movie';
 
 const BASE_URL = 'http://www.omdbapi.com';
 
@@ -8,6 +8,6 @@ export const getFetchData = (params: string) =>
     params: {
       apiKey: process.env.REACT_APP_API_KEY,
       s: params,
-      page: 2,
+      page: 1,
     },
   });

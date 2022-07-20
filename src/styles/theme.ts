@@ -1,21 +1,28 @@
 import { DefaultTheme } from 'styled-components';
 
 const colors = {
-  RED: '#ff3b30',
-  ORANGE: '#ff9500',
-  YELLOW: '#fc0',
-  GREEN: '#34c759',
-  TEAL: '#5ac8fa',
-  BLUE: '#007aff',
-  INDIGO: '#5856d6',
-  PURPLE: '#af52de',
-  PINK: '#ff2d55',
+  black: '#2e2e2e',
+  gray: '#c7c7c7',
+};
+
+const sizes = {
+  tablet: '768px',
+  laptop: '1024px',
+};
+
+const device = {
+  tablet: `(min-width: ${sizes.tablet})`,
+  laptop: `(min-width: ${sizes.laptop})`,
 };
 
 const theme: DefaultTheme = {
   colors,
+  sizes,
+  device,
 };
 
 export type Colors = typeof colors;
+export type Sizes = typeof sizes;
+export type Device = typeof device;
 
 export default theme;

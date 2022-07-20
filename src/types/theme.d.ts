@@ -1,8 +1,10 @@
 import 'styled-components';
-import { Colors } from 'styles/theme';
+import { Colors, Device, Sizes } from 'styles/theme';
 
 declare module 'styled-components' {
   export interface DefaultTheme {
     colors: Colors;
+    sizes: Sizes;
+    device: Device;
   }
 }
