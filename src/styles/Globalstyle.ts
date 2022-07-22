@@ -27,8 +27,6 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    background-color: #05103a;
-    color: #fff;
     padding: 0 25px;
   }
 `;

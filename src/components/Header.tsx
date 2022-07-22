@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 
 import { Delete, Search } from 'assets/svg';
 import { getFetchData } from 'services/todo';
-import { addMovies, checkError } from 'states/movies';
+import { addMovies, checkError, toggleLoading } from 'states/movies';
 
 const StyledHeader = styled.header`
   align-items: center;
@@ -18,17 +18,18 @@ const StyledHeader = styled.header`
     position: relative;
     width: 100%;
     input {
-      background-color: #2c3759;
+      background-color: ${({ theme }) => theme.colors.gray};
       border: none;
       border-radius: 35px;
-      color: #999ca5;
+      color: ${({ theme }) => theme.colors.black};
+
       flex: 1;
       font-size: 16px;
       height: 40px;
       padding: 5px 30px 5px 50px;
     }
     input::placeholder {
-      color: #999ca5;
+      color: ${({ theme }) => theme.colors.gray2};
     }
 
     button {
@@ -52,6 +53,9 @@ const StyledHeader = styled.header`
       display: flex;
     }
   }
+  svg {
+    fill: ${({ theme }) => theme.colors.gray2};
+  }
 `;
 
 export default function Header() {
@@ -66,18 +70,20 @@ export default function Header() {
   const handleChangeText = (e: ChangeEvent<HTMLInputElement>) =>
     setText(e.currentTarget.value);
 
-  const handleSubmitFetchData = (e: FormEvent) => {
+  const handleSubmitFetchData = async (e: FormEvent) => {
     e.preventDefault();
-    getFetchData(text)
-      .then((res) => {
-        navigate(`/search/${text}`, {
-          state: text,
-        });
-        if (res.data.Response === 'False') throw new Error();
-        disaptch(checkError(false));
-        disaptch(addMovies(res.data.Search));
-      })
-      .catch(() => disaptch(checkError(true)));
+    try {
+      disaptch(toggleLoading(true));
+      navigate(`/search/${text}`, { state: text });
+      const { data } = await getFetchData(text);
+      if (data.Response === 'False') throw new Error();
+      disaptch(addMovies(data.Search));
+    } catch (err) {
+      disaptch(checkError(true));
+    } finally {
+      disaptch(toggleLoading(false));
+      disaptch(checkError(false));
+    }
   };
 
   const handleDeleteText = () => {
@@ -106,7 +112,7 @@ export default function Header() {
           placeholder="Search movie"
         />
         <button type="button" onClick={handleSubmitFetchData}>
-          <Search fill="#999ca5" width={23} />
+          <Search width={23} />
         </button>
 
         <button
@@ -114,7 +120,7 @@ export default function Header() {
           className={isTyping ? 'on' : undefined}
           onClick={handleDeleteText}
         >
-          <Delete width={25} fill="#999ca5" />
+          <Delete width={25} />
         </button>
       </form>
     </StyledHeader>

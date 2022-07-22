@@ -2,7 +2,8 @@ import { DefaultTheme } from 'styled-components';
 
 const colors = {
   black: '#2e2e2e',
-  gray: '#c7c7c7',
+  gray: '#f3f3f5',
+  gray2: '#a6a5ab',
 };
 
 const sizes = {

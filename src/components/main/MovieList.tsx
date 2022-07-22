@@ -12,12 +12,15 @@ const StyledMovieList = styled.ul`
 `;
 
 export default function MovieList() {
-  const { movies, isError } = useAppSelector((state) => state.movies);
+  const { movies, isError, isLoading } = useAppSelector(
+    (state) => state.movies,
+  );
 
   const location = useLocation();
   const state = location.state as string;
 
   if (isError) return <div>{state}에 대한 검색결과가 없습니다.</div>;
+  if (isLoading) return <div>loading........</div>;
 
   return (
     <StyledMovieList>

@@ -4,8 +4,8 @@
 <img src="https://img.shields.io/badge/React-v18.2.0-5ed3f3"/>
 <img src="https://img.shields.io/badge/TypeScript-v4.7.4-0076c6"/>
 <img src="https://img.shields.io/badge/Redux toolkit-v1.8.3-764abc"/>
-<img src="https://img.shields.io/badge/React Router Dom-v6.3.0-ca4245"/>
 <br/>
+<img src="https://img.shields.io/badge/React Router Dom-v6.3.0-ca4245"/>
 <img src="https://img.shields.io/badge/styled components-v5.3.5-e081cf"/>
 </div>
 <br/>
@@ -21,6 +21,8 @@
 ## Depoly
 
 https://moviesearcherappp.netlify.app/
+
+<br/>
 
 ## Installation
 

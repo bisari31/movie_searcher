@@ -4,6 +4,7 @@ interface ISearch {
   Type: string;
   Year: string;
   imdbID: string;
+  favorite?: boolean;
 }
 
 export interface IData {
