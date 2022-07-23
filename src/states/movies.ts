@@ -1,4 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
+import store from 'store';
+
 import { ISearch } from 'types/movie';
 
 interface IMovies {
@@ -29,7 +31,7 @@ const movieSlice = createSlice({
     },
     toggleFavoriteOpion(state, action) {
       state.movies = state.movies.map((movie) =>
-        movie.imdbID === action.payload
+        movie.imdbID === action.payload.imdbID
           ? { ...movie, favorite: !movie.favorite }
           : movie,
       );

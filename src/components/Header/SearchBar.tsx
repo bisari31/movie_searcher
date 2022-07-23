@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -7,11 +7,18 @@ import { Delete, Search } from 'assets/svg';
 import { getFetchData } from 'services/todo';
 import { addMovies, checkError, toggleLoading } from 'states/movies';
 
-const StyledHeader = styled.header`
-  align-items: center;
-  /* background-color: red; */
-  display: flex;
-  margin-top: 65px;
+const StyledHeader = styled.div<{ home: boolean }>`
+  ${({ home }) =>
+    home &&
+    css`
+      left: 25px;
+      margin: 0 auto;
+      max-width: 800px;
+      position: absolute;
+      right: 25px;
+      top: 40%;
+      transform: translateY(50%);
+    `}
   form {
     align-items: center;
     display: flex;
@@ -56,9 +63,11 @@ const StyledHeader = styled.header`
   svg {
     fill: ${({ theme }) => theme.colors.gray2};
   }
+  @media ${({ theme }) => theme.device.laptop} {
+  }
 `;
 
-export default function Header() {
+export default function SearchBar() {
   const [text, setText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -97,12 +106,15 @@ export default function Header() {
 
   useEffect(() => {
     const state = location.state as string;
-    if (location.pathname !== '/') setText(state);
+    if (location.pathname !== '/') {
+      setText(state);
+    }
+
     inputRef.current?.focus();
   }, []);
 
   return (
-    <StyledHeader>
+    <StyledHeader home={location.pathname === '/'}>
       <form action="" onSubmit={handleSubmitFetchData}>
         <input
           ref={inputRef}
@@ -114,7 +126,6 @@ export default function Header() {
         <button type="button" onClick={handleSubmitFetchData}>
           <Search width={23} />
         </button>
-
         <button
           type="button"
           className={isTyping ? 'on' : undefined}
