@@ -10,7 +10,7 @@ export default function App() {
     <Routes>
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
-        <Route path="search/:title" element={<Search />} />
+        <Route path="search/:movieTitle" element={<Search />} />
         <Route path="favorites" element={<Favorites />} />
       </Route>
     </Routes>

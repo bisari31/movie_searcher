@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { ISearch } from 'types/movie';
 import noImage from 'assets/noImage.png';
 import { Favorite, FavoriteLine } from 'assets/svg';
-import { toggleFavoriteOpion } from 'states/movies';
+import { toggleFavoriteOption } from 'states/movies';
 
 const StyledMovieItem = styled.li`
   display: flex;
@@ -70,7 +70,7 @@ export default function MovieItem({ movie }: IProps) {
   const dispatch = useDispatch();
 
   const handleChangeFavorite = () => {
-    dispatch(toggleFavoriteOpion(movie));
+    dispatch(toggleFavoriteOption(movie));
   };
 
   return (

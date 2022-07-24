@@ -4,7 +4,7 @@ import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { Delete, Search } from 'assets/svg';
-import { getFetchData } from 'services/todo';
+import { getFetchData } from 'services/movie';
 import { addMovies, checkError, toggleLoading } from 'states/movies';
 
 const StyledHeader = styled.div<{ home: boolean }>`
@@ -82,6 +82,7 @@ export default function SearchBar() {
   const handleSubmitFetchData = async (e: FormEvent) => {
     e.preventDefault();
     try {
+      disaptch(checkError(false));
       disaptch(toggleLoading(true));
       navigate(`/search/${text}`, { state: text });
       const { data } = await getFetchData(text);
@@ -91,7 +92,6 @@ export default function SearchBar() {
       disaptch(checkError(true));
     } finally {
       disaptch(toggleLoading(false));
-      disaptch(checkError(false));
     }
   };
 
@@ -105,11 +105,11 @@ export default function SearchBar() {
   }, [text]);
 
   useEffect(() => {
-    const state = location.state as string;
-    if (location.pathname !== '/') {
-      setText(state);
-    }
+    // const state = location.state as string;
+    if (location.pathname === '/') setText('');
+  }, [location]);
 
+  useEffect(() => {
     inputRef.current?.focus();
   }, []);
 

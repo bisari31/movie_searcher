@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 
-import SearchBar from 'components/Header/SearchBar';
+import SearchBar from './SearchBar';
 import Nav from './Nav';
 
 const StyledHeader = styled.header``;
