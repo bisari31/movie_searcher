@@ -7,7 +7,7 @@ import { Delete, Search } from 'assets/svg';
 import { getFetchData } from 'services/movie';
 import { addMovies, checkError, toggleLoading } from 'states/movies';
 
-const StyledHeader = styled.div<{ home: boolean }>`
+const StyledSearchBar = styled.div<{ home: boolean }>`
   ${({ home }) =>
     home &&
     css`
@@ -114,7 +114,7 @@ export default function SearchBar() {
   }, []);
 
   return (
-    <StyledHeader home={location.pathname === '/'}>
+    <StyledSearchBar home={location.pathname === '/'}>
       <form action="" onSubmit={handleSubmitFetchData}>
         <input
           ref={inputRef}
@@ -134,6 +134,6 @@ export default function SearchBar() {
           <Delete width={25} />
         </button>
       </form>
-    </StyledHeader>
+    </StyledSearchBar>
   );
 }
