@@ -16,20 +16,28 @@ const movieSlice = createSlice({
   initialState,
   reducers: {
     addMovies(state, action) {
-      const storageData = store.get('movies');
+      const storageData: ISearch[] = store.get('movies');
       const data: ISearch[] = action.payload;
-      let newData: ISearch[] = data.map((movie) => ({
+      const newData: ISearch[] = data.map((movie) => ({
         ...movie,
         favorite: false,
       }));
-      if (!storageData || storageData.length < 1) state.movies = newData;
-      else {
-        newData = [...storageData, ...newData];
-        state.movies = newData.reduce((acc: ISearch[], cur) => {
-          if (acc.findIndex((item) => item.imdbID === cur.imdbID) === -1)
-            acc.push(cur);
-          return acc;
-        }, []);
+      if (!storageData || storageData.length < 1) {
+        state.movies = newData;
+      } else {
+        const overlapMovie = storageData.filter((storageMovie) =>
+          newData.some((item) => item.imdbID === storageMovie.imdbID),
+        );
+        if (overlapMovie.length === 0) {
+          state.movies = newData;
+        } else {
+          const mergeData = [...overlapMovie, ...newData];
+          state.movies = mergeData.reduce((acc: ISearch[], cur) => {
+            if (acc.findIndex((item) => item.imdbID === cur.imdbID) === -1)
+              acc.push(cur);
+            return acc;
+          }, []);
+        }
       }
     },
     checkError(state, action) {

@@ -39,24 +39,18 @@ npm start
 ## Directory Structure
 
 ```
-──src
+└─src
+    ├─assets
+    │  └─svg
     ├─components
-    │  ├─common
-    │  │  ├─modal
-    │  │  └─movieList
-    │  ├─layout
-    │  ├─searchBar
-    │  └─tabBar
+    │  ├─header
+    │  └─main
     ├─hooks
     ├─pages
-    │  ├─favorites
-    │  └─home
-    ├─recoil
+    ├─services
+    ├─states
     ├─styles
-    │  └─base
-    ├─types
-    └─utils
-
+    └─types
 ```
 
 라우터를 중심으로 pages 폴더에 home과 favorites 컴포넌트 구성하였다.  

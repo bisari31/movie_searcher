@@ -36,9 +36,10 @@ export default function MovieList() {
   }, [movies]);
 
   if (isLoading) return <div>loading........</div>;
-  if (isError) return <div>{movieTitle}에 대한 검색결과가 없습니다.</div>;
-  if (pathname === '/favorites' && (!storageData || storageData.length < 1))
+  if (pathname === '/favorites' && (!storageData || storageData.length === 0))
     return <div>즐겨찾는 영화가 없습니다. 영화를 추가해 주세요.</div>;
+  if (isError && pathname.includes('/search'))
+    return <div>{movieTitle}에 대한 검색결과가 없습니다.</div>;
 
   return <StyledMovieList>{getMovieList(checkPathName)}</StyledMovieList>;
 }
